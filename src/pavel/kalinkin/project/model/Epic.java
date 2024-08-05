@@ -7,26 +7,39 @@ public class Epic extends Task {
     private final List<Integer> epicSubTasksId = new ArrayList<>();
 
     public Epic(String taskName, String description) {
-        super(taskName, description);
-        this.status = TaskStatus.NEW;
+        super(taskName, description, TaskStatus.NEW);
+
+    }
+
+    public Epic(String taskName, String description, int id) {
+        super(taskName, description, TaskStatus.NEW, id);
+        this.id = id;
     }
 
     public List<Integer> getEpicSubTasks() {
-        return epicSubTasksId;
+        return new ArrayList<>(epicSubTasksId);
     }
 
-    public void addSubTask(SubTask subTask) {
+    public void addSubTaskId(SubTask subTask) {
         epicSubTasksId.add(subTask.getId());
+    }
+
+    public void deleteAllSubtasksId() {
+        epicSubTasksId.clear();
+    }
+
+
+    public void deleteSubTaskById(int subTaskId) {
+        epicSubTasksId.remove(subTaskId);
     }
 
     @Override
     public String toString() {
         return "Epic{" +
                 "epicSubTasksId=" + epicSubTasksId +
-                ", taskName='" + taskName + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                '}';
+                ", taskName='" + taskName +
+                '\'' + ", description='" + description +
+                '\'' + ", id=" + id +
+                ", status=" + status + '}';
     }
 }

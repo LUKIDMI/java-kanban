@@ -1,31 +1,62 @@
 package pavel.kalinkin.project.model;
 
-import pavel.kalinkin.project.manager.TaskManager;
-
 import java.util.Objects;
 
 public class Task {
     protected String taskName;
     protected String description;
-    protected final int id;
+    protected int id;
     protected TaskStatus status;
 
     public Task(String taskName, String description) {
         this.taskName = taskName;
         this.description = description;
-        this.id = TaskManager.setIdCounter();
         this.status = TaskStatus.NEW;
     }
 
-    public int getId(){
+    public Task(String taskName, String description, TaskStatus status) {
+        this.taskName = taskName;
+        this.description = description;
+        this.status = status;
+    }
+
+    public Task(String taskName, String description, TaskStatus status, int id) {
+        this.taskName = taskName;
+        this.description = description;
+        this.status = status;
+        this.id = id;
+    }
+
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
         return this.id;
     }
 
-    public TaskStatus getStatus(){
+    public TaskStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(TaskStatus status){
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
