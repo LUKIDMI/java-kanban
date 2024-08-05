@@ -3,9 +3,10 @@ package pavel.kalinkin.project.model;
 public class SubTask extends Task {
     private int epicId;
 
-    public SubTask(String taskName, String description) {
+    public SubTask(String taskName, String description, int epicId) {
         super(taskName, description);
         this.status = TaskStatus.NEW;
+        this.epicId = epicId;
     }
 
     public SubTask(String taskName, String description, TaskStatus status, int epicId, int id) {
