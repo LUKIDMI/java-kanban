@@ -5,7 +5,10 @@ import pavel.kalinkin.project.model.SubTask;
 import pavel.kalinkin.project.model.Task;
 import pavel.kalinkin.project.model.TaskStatus;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class InMemoryTaskManager implements TaskManager {
