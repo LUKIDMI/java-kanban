@@ -16,12 +16,16 @@ public class Epic extends Task {
         this.id = id;
     }
 
+
     public List<Integer> getEpicSubTasks() {
         return new ArrayList<>(epicSubTasksId);
     }
 
     public void addSubTaskId(SubTask subTask) {
-        epicSubTasksId.add(subTask.getId());
+        if (subTask != null && !epicSubTasksId.contains(subTask.getId()))
+            epicSubTasksId.add(subTask.getId());
+        else
+            System.out.println("SubTask с таким ID уже есть в списке эпика или передан null");
     }
 
     public void deleteAllSubtasksId() {
