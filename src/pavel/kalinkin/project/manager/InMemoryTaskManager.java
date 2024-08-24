@@ -18,8 +18,8 @@ public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, SubTask> subTasks = new HashMap<>();
     private int idCounter;
 
-    public InMemoryTaskManager(HistoryManager historyManager) {
-        this.historyManager = historyManager;
+    public InMemoryTaskManager() {
+        this.historyManager = Managers.getDefaultHistory();
         this.idCounter = 0;
     }
 
