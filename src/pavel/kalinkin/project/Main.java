@@ -1,7 +1,5 @@
 package pavel.kalinkin.project;
 
-
-import pavel.kalinkin.project.manager.InMemoryTaskManager;
 import pavel.kalinkin.project.manager.Managers;
 import pavel.kalinkin.project.manager.TaskManager;
 import pavel.kalinkin.project.model.Epic;
@@ -32,8 +30,13 @@ public class Main {
         System.out.println(manager.getEpicById(10));
         System.out.println("-------");
 
+        manager.getEpicById(2);
+        manager.getTaskById(1);
+        manager.getSubTaskById(3);
+        manager.getSubTaskById(4);
+
         printAllTasks(manager);
-        ;
+
     }
 
     private static void printAllTasks(TaskManager manager) {
