@@ -5,10 +5,7 @@ import pavel.kalinkin.project.model.SubTask;
 import pavel.kalinkin.project.model.Task;
 import pavel.kalinkin.project.model.TaskStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class InMemoryTaskManager implements TaskManager {
@@ -49,6 +46,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllTasks() {
+        for(Task task: getAllTasks()){
+            historyManager.remove(task.getId());
+        }
         tasks.clear();
     }
 
@@ -59,7 +59,7 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Task с таким ID нет в списке задач.");
             return null;
         }
-        historyManager.addTask(task);
+        historyManager.add(task);
         return task;
     }
 
@@ -78,6 +78,7 @@ public class InMemoryTaskManager implements TaskManager {
         Task task = tasks.get(taskId);
         if (task != null) {
             tasks.remove(taskId);
+            historyManager.remove(taskId);
         } else {
             System.out.println("Task с таким ID нет в списке задач.");
         }
@@ -90,6 +91,12 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllEpics() {
+        for(Epic epic: getAllEpics()){
+            historyManager.remove(epic.getId());
+        }
+        for(SubTask subTask: getAllSubTasks()){
+            historyManager.remove(subTask.getId());
+        }
         epics.clear();
         subTasks.clear();
     }
@@ -101,7 +108,7 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Epic с таким ID нет в списке задач.");
             return null;
         }
-        historyManager.addTask(epic);
+        historyManager.add(epic);
         return epic;
     }
 
@@ -169,7 +176,9 @@ public class InMemoryTaskManager implements TaskManager {
             List<Integer> tmpList = epic.getEpicSubTasks();
             for (Integer subTaskId : tmpList) {
                 subTasks.remove(subTaskId);
+                historyManager.remove(subTaskId);
             }
+            historyManager.remove(epicId);
             epics.remove(epicId);
         } else {
             System.out.println("Epic с таким ID нет в списке задач.");
@@ -206,6 +215,10 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllSubTasks() {
         subTasks.clear();
         for (Epic epic : epics.values()) {
+            for(Integer subTaskId: epic.getEpicSubTasks()){
+                historyManager.remove(subTaskId);
+            }
+            historyManager.remove(epic.getId());
             epic.deleteAllSubtasksId();
             updateEpicStatus(epic);
         }
@@ -218,7 +231,7 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Subtask с таким ID нет в списке подзадач.");
             return null;
         }
-        historyManager.addTask(subTask);
+        historyManager.add(subTask);
         return subTask;
     }
 
@@ -263,6 +276,7 @@ public class InMemoryTaskManager implements TaskManager {
             if (epic != null) {
                 epic.deleteSubTaskById(subTaskId);
                 subTasks.remove(subTaskId);
+                historyManager.remove(subTaskId);
                 updateEpicStatus(epic);
             }
         }
