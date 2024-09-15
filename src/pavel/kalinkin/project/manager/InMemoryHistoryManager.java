@@ -28,7 +28,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if(tasksMap.containsKey(task.getId())){
+        if (tasksMap.containsKey(task.getId())) {
             remove(task.getId());
         }
         linkLast(task);
