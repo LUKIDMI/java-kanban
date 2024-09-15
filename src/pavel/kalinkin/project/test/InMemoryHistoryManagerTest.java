@@ -1,11 +1,8 @@
 package pavel.kalinkin.project.test;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pavel.kalinkin.project.manager.HistoryManager;
-import pavel.kalinkin.project.manager.InMemoryHistoryManager;
 import pavel.kalinkin.project.manager.InMemoryTaskManager;
 import pavel.kalinkin.project.manager.TaskManager;
 import pavel.kalinkin.project.model.Task;
@@ -23,7 +20,7 @@ class InMemoryHistoryManagerTest {
 
 
     @BeforeEach
-    void setData(){
+    void setData() {
         manager = new InMemoryTaskManager();
         task1 = new Task("Test", "Test", TaskStatus.NEW);
         task2 = new Task("Test", "Test", TaskStatus.NEW);
@@ -54,13 +51,11 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void shouldReturnTrueDeleteTask(){
+    void shouldReturnTrueDeleteTask() {
         List<Task> tasks = manager.getHistory();
         Assertions.assertTrue(tasks.contains(task2));
         manager.deleteTaskById(task2.getId());
         tasks = manager.getHistory();
         Assertions.assertFalse(tasks.contains(task2));
     }
-
-
 }
