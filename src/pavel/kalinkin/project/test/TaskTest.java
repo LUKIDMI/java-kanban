@@ -9,7 +9,7 @@ import pavel.kalinkin.project.model.TaskStatus;
 class TaskTest {
 
     @Test
-    public void shouldReturnTrueTaskEqualsTask(){
+    public void shouldReturnTrueTaskEqualsTask() {
         Task task1 = new Task("Test", "Test", TaskStatus.NEW, 1);
         Task task2 = new Task("Test", "Test", TaskStatus.NEW, 1);
 
