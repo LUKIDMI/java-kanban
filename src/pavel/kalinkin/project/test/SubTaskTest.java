@@ -2,7 +2,6 @@ package pavel.kalinkin.project.test;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pavel.kalinkin.project.model.Epic;
 import pavel.kalinkin.project.model.SubTask;
 
 class SubTaskTest {
