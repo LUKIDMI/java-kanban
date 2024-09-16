@@ -14,31 +14,31 @@ import java.util.List;
 
 class InMemoryTaskManagerTest {
 
-    TaskManager taskManager;
-    Task task1;
-    Task task2;
-    Epic epic1;
-    Epic epic2;
-    SubTask subTask1;
-    SubTask subTask2;
+    TaskManager taskManager = Managers.getDefault();
+    Task task1 = new Task("Test", "Test");
+    Task task2 = new Task("Test", "Test");
+    Epic epic1 = new Epic("Test", "Test");
+    Epic epic2 = new Epic("Test", "Test");
+    SubTask subTask1 = new SubTask("Test", "Test", 3);
+    SubTask subTask2 = new SubTask("Test", "Test", 3);
 
 
     @BeforeEach
     public void resetManager() {
-        taskManager = Managers.getDefault();
-        taskManager = Managers.getDefault();
-        task1 = new Task("Test", "Test");
-        task2 = new Task("Test", "Test");
-        epic1 = new Epic("Test", "Test");
-        epic2 = new Epic("Test", "Test");
-        subTask1 = new SubTask("Test", "Test", 1);
-        subTask2 = new SubTask("Test", "Test", 1);
+        taskManager.addTask(task1);
+        taskManager.addTask(task2);
+        taskManager.addEpic(epic1);
+        taskManager.addEpic(epic2);
+        taskManager.addSubTask(subTask1);
+        taskManager.addSubTask(subTask2);
+        taskManager.getTaskById(1);
+        taskManager.getTaskById(2);
     }
 
     @Test
     void addTask() {
-        final int taskId = taskManager.addTask(task1);
-        Task savedTask = taskManager.getTaskById(taskId);
+
+        Task savedTask = taskManager.getTaskById(task1.getId());
 
         Assertions.assertNotNull(savedTask, "Задача не найдена.");
         Assertions.assertEquals(task1, savedTask, "Задачи не совпадают");
@@ -46,7 +46,7 @@ class InMemoryTaskManagerTest {
         final List<Task> tasks = taskManager.getAllTasks();
 
         Assertions.assertNotNull(tasks, "Задачи не возвращаются.");
-        Assertions.assertEquals(1, tasks.size(), "Неверное количество задач.");
+        Assertions.assertEquals(2, tasks.size(), "Неверное количество задач.");
         Assertions.assertEquals(task1, tasks.getFirst(), "Задачи не совпадают.");
 
     }
@@ -83,8 +83,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void getTaskById() {
-        final int taskId = taskManager.addTask(task1);
-        Task savedTask = taskManager.getTaskById(taskId);
+        Task savedTask = taskManager.getTaskById(task1.getId());
 
         Assertions.assertNotNull(savedTask, "Задача не найдена");
         Assertions.assertEquals(task1, savedTask, "Задачи не совпадают");
@@ -92,11 +91,10 @@ class InMemoryTaskManagerTest {
 
     @Test
     void updateTask() {
-        final int taskId = taskManager.addTask(task1);
 
-        Task tmpTask = new Task("Название", "Описание", TaskStatus.IN_PROGRESS, taskId);
+        Task tmpTask = new Task("Название", "Описание", TaskStatus.IN_PROGRESS, task1.getId());
         taskManager.updateTask(tmpTask);
-        Task updTask = taskManager.getTaskById(taskId);
+        Task updTask = taskManager.getTaskById(task1.getId());
 
         final String taskName = task1.getTaskName();
         final String updTaskName = updTask.getTaskName();
@@ -113,20 +111,19 @@ class InMemoryTaskManagerTest {
 
         Assertions.assertNotEquals(status, updStatus, "Статус не обновился");
 
-        Assertions.assertEquals(taskId, updTask.getId(), "Задачи не совпадают.");
+        Assertions.assertEquals(task1.getId(), updTask.getId(), "Задачи не совпадают.");
     }
 
     @Test
     void deleteTaskById() {
-        final int taskId = taskManager.addTask(task1);
         boolean isInTaskList = taskManager.getAllTasks().contains(task1);
 
         Assertions.assertTrue(isInTaskList, "Задачи нет в списке задач");
 
-        taskManager.deleteTaskById(taskId);
+        taskManager.deleteTaskById(task1.getId());
         isInTaskList = taskManager.getAllTasks().contains(task1);
 
-        Assertions.assertEquals(0, taskManager.getAllTasks().size(), "Список задач не упустой");
+        Assertions.assertEquals(1, taskManager.getAllTasks().size(), "Список задач не упустой");
         Assertions.assertFalse(isInTaskList, "Задача не удалилась.");
     }
 
@@ -166,8 +163,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void getEpicById() {
-        final int epicId = taskManager.addEpic(epic1);
-        Epic savedEpic = taskManager.getEpicById(epicId);
+        Epic savedEpic = taskManager.getEpicById(epic1.getId());
 
         Assertions.assertNotNull(savedEpic, "Эпик не добавился");
         Assertions.assertEquals(epic1, savedEpic, "Эпики не совпадают.");
@@ -175,9 +171,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void addEpic() {
-        final int epicId = taskManager.addEpic(epic1);
-
-        Epic savedEpic = taskManager.getEpicById(epicId);
+        Epic savedEpic = taskManager.getEpicById(epic1.getId());
 
         Assertions.assertNotNull(savedEpic, "Задача не найдена.");
         Assertions.assertEquals(epic1, savedEpic, "Задачи не совпадают");
@@ -185,7 +179,7 @@ class InMemoryTaskManagerTest {
         final List<Epic> epics = taskManager.getAllEpics();
 
         Assertions.assertNotNull(epics, "Задачи не возвращаются.");
-        Assertions.assertEquals(1, epics.size(), "Неверное количество задач.");
+        Assertions.assertEquals(2, epics.size(), "Неверное количество задач.");
         Assertions.assertEquals(epic1, epics.getFirst(), "Задачи не совпадают.");
     }
 
@@ -238,15 +232,12 @@ class InMemoryTaskManagerTest {
 
     @Test
     void deleteAllSubTasks() {
-        taskManager.addEpic(epic1);
-        taskManager.addSubTask(subTask1);
-
 
         boolean isSubTaskInEpicList = epic1.getEpicSubTasks().contains(subTask1.getId());
-        boolean isInSubTaskList = taskManager.getAllSubTasks().contains(subTask1.getId());
+        boolean isInSubTaskList = taskManager.getAllSubTasks().contains(subTask1);
 
         Assertions.assertTrue(isSubTaskInEpicList, "Подзадач нет в списке эпика.");
-        Assertions.assertFalse(isInSubTaskList, "Подзадачи нет в списке подзадач.");
+        Assertions.assertTrue(isInSubTaskList, "Подзадачи нет в списке подзадач.");
 
         Assertions.assertNotNull(taskManager.getAllTasks());
 
@@ -262,9 +253,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void getSubTaskById() {
-        taskManager.addEpic(epic1);
-        final int subTaskId = taskManager.addSubTask(subTask1);
-        Task savedSubTask = taskManager.getSubTaskById(subTaskId);
+        Task savedSubTask = taskManager.getSubTaskById(subTask1.getId());
 
         Assertions.assertNotNull(savedSubTask, "Такой подзадачи нет");
         Assertions.assertEquals(subTask1, savedSubTask, "Подзадача добавилась некорректно.");
@@ -272,9 +261,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void addSubTask() {
-        taskManager.addEpic(epic1);
-        final int subTaskId = taskManager.addSubTask(subTask1);
-        SubTask savedSubTask = taskManager.getSubTaskById(subTaskId);
+        SubTask savedSubTask = taskManager.getSubTaskById(subTask1.getId());
 
         Assertions.assertNotNull(savedSubTask, "Задача не найдена.");
         Assertions.assertEquals(subTask1, savedSubTask, "Задачи не совпадают");
@@ -282,12 +269,9 @@ class InMemoryTaskManagerTest {
 
     @Test
     void updateSubTask() {
-        taskManager.addEpic(epic1);
-        final int subTaskId = taskManager.addSubTask(subTask1);
-
-        SubTask tmpSubTask = new SubTask("Название", "Описание", TaskStatus.IN_PROGRESS, epic1.getId(), subTaskId);
+        SubTask tmpSubTask = new SubTask("Название", "Описание", TaskStatus.IN_PROGRESS, epic1.getId(), subTask1.getId());
         taskManager.updateSubTask(tmpSubTask);
-        SubTask updSubTask = taskManager.getSubTaskById(subTaskId);
+        SubTask updSubTask = taskManager.getSubTaskById(subTask1.getId());
 
         final String taskName = subTask1.getTaskName();
         final String updTaskSubName = updSubTask.getTaskName();
@@ -304,24 +288,20 @@ class InMemoryTaskManagerTest {
 
         Assertions.assertNotEquals(status, updStatus, "Статус не обновился.");
 
-        Assertions.assertEquals(subTaskId, updSubTask.getId(), "Id подзадач не совпадает.");
+        Assertions.assertEquals(subTask1.getId(), updSubTask.getId(), "Id подзадач не совпадает.");
     }
 
     @Test
     void deleteSubTaskById() {
-        taskManager.addEpic(epic1);
-        final int subTaskId = taskManager.addSubTask(subTask1);
-
         boolean isInSubtaskInList = taskManager.getAllSubTasks().contains(subTask1);
-        boolean isInEpicList = epic1.getEpicSubTasks().contains(subTaskId);
-
+        boolean isInEpicList = epic1.getEpicSubTasks().contains(subTask1.getId());
 
         Assertions.assertTrue(isInSubtaskInList, "Подзадачи нет в списке подзадач");
         Assertions.assertTrue(isInEpicList, "Подзадачи нет в спике эпика.");
 
-        taskManager.deleteSubTaskById(subTaskId);
+        taskManager.deleteSubTaskById(subTask1.getId());
         isInSubtaskInList = taskManager.getAllSubTasks().contains(subTask1);
-        isInEpicList = epic1.getEpicSubTasks().contains(subTaskId);
+        isInEpicList = epic1.getEpicSubTasks().contains(subTask1.getId());
 
         Assertions.assertFalse(isInSubtaskInList, "Подзадача осталась в спике подзадач.");
         Assertions.assertFalse(isInEpicList, "Подзадача осталась в списке эпика.");
