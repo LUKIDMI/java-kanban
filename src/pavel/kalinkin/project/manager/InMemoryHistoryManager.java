@@ -35,7 +35,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     public void remove(int id) {
-        if(tasksMap.containsKey(id)) {
+        if (tasksMap.containsKey(id)) {
             Node node = tasksMap.get(id);
             removeNode(node);
             tasksMap.remove(id);
