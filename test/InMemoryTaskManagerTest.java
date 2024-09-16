@@ -241,11 +241,14 @@ class InMemoryTaskManagerTest {
         taskManager.addEpic(epic1);
         taskManager.addSubTask(subTask1);
 
+
         boolean isSubTaskInEpicList = epic1.getEpicSubTasks().contains(subTask1.getId());
         boolean isInSubTaskList = taskManager.getAllSubTasks().contains(subTask1.getId());
 
         Assertions.assertTrue(isSubTaskInEpicList, "Подзадач нет в списке эпика.");
         Assertions.assertFalse(isInSubTaskList, "Подзадачи нет в списке подзадач.");
+
+        Assertions.assertNotNull(taskManager.getAllTasks());
 
         taskManager.deleteAllSubTasks();
         isSubTaskInEpicList = epic1.getEpicSubTasks().contains(subTask1.getId());
@@ -253,6 +256,8 @@ class InMemoryTaskManagerTest {
 
         Assertions.assertFalse(isSubTaskInEpicList, "Подзадача осталась в списке подзадач эпика.");
         Assertions.assertFalse(isInSubTaskList, "Подзадача осталась в списке подзадач");
+
+
     }
 
     @Test
