@@ -3,7 +3,6 @@ package pavel.kalinkin.project.manager;
 import pavel.kalinkin.project.model.Epic;
 import pavel.kalinkin.project.model.SubTask;
 import pavel.kalinkin.project.model.Task;
-import pavel.kalinkin.project.model.TaskStatus;
 
 import java.util.List;
 
