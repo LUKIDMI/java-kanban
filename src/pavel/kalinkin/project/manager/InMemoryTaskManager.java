@@ -113,7 +113,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Integer addEpic(Epic epic) {
+    public Integer addTask(Epic epic) {
         if (epic != null && !epics.containsKey(epic.getId())) {
             int newId = generateId();
             epic.setId(newId);
@@ -235,7 +235,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Integer addSubTask(SubTask subTask) {
+    public Integer addTask(SubTask subTask) {
         if (subTask != null && !subTasks.containsKey(subTask.getId())) {
             Epic epic = epics.get(subTask.getEpicId());
             if (epic != null) {

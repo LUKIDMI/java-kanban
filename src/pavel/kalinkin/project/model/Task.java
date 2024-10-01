@@ -3,25 +3,25 @@ package pavel.kalinkin.project.model;
 import java.util.Objects;
 
 public class Task {
-    protected String taskName;
+    protected String name;
     protected String description;
     protected int id;
     protected TaskStatus status;
 
     public Task(String taskName, String description) {
-        this.taskName = taskName;
+        this.name = taskName;
         this.description = description;
         this.status = TaskStatus.NEW;
     }
 
     public Task(String taskName, String description, TaskStatus status) {
-        this.taskName = taskName;
+        this.name = taskName;
         this.description = description;
         this.status = status;
     }
 
-    public Task(String taskName, String description, TaskStatus status, int id) {
-        this.taskName = taskName;
+    public Task(int id, String taskName, String description, TaskStatus status) {
+        this.name = taskName;
         this.description = description;
         this.status = status;
         this.id = id;
@@ -29,11 +29,11 @@ public class Task {
 
 
     public String getTaskName() {
-        return taskName;
+        return name;
     }
 
     public void setTaskName(String taskName) {
-        this.taskName = taskName;
+        this.name = taskName;
     }
 
     public String getDescription() {
@@ -75,6 +75,19 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" + "taskName='" + taskName + '\'' + ", description='" + description + '\'' + ", id=" + id + ", status=" + status + '}';
+        return String.format("%d,%s,%s,%s,%s", getId(), getType(), getTaskName(), getStatus(), getDescription());
+    }
+
+    public Task fromString(String task){
+        String[] taskElements = task.split(",");
+        int taskId = Integer.parseInt(taskElements[0]);
+        String taskName = taskElements[2];
+        TaskStatus taskStatus = TaskStatus.valueOf(taskElements[3]);
+        String taskDescription = taskElements[4];
+        return new Task(taskId, taskName, taskDescription, taskStatus);
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 }

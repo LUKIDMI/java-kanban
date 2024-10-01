@@ -1,5 +1,6 @@
 package pavel.kalinkin.project;
 
+import pavel.kalinkin.project.manager.FileBackedTaskManager;
 import pavel.kalinkin.project.manager.Managers;
 import pavel.kalinkin.project.manager.TaskManager;
 import pavel.kalinkin.project.model.Epic;
@@ -7,53 +8,15 @@ import pavel.kalinkin.project.model.SubTask;
 import pavel.kalinkin.project.model.Task;
 import pavel.kalinkin.project.model.TaskStatus;
 
+import java.io.File;
+
 public class Main {
     public static void main(String[] args) {
-        TaskManager manager = getTaskManager();
+        File file = new File("src/pavel/kalinkin/project/data/data.csv");
+        TaskManager manager = FileBackedTaskManager.loadFromFile(file);
 
+        printAllTasks(manager);
 
-        manager.getEpicById(1);
-        manager.getSubTaskById(2);
-        manager.getSubTaskById(3);
-        manager.getSubTaskById(4);
-        manager.getEpicById(5);
-        manager.getTaskById(6);
-        manager.getTaskById(7);
-
-        printHistory(manager);
-        System.out.println();
-
-        manager.getEpicById(5);
-        manager.getTaskById(6);
-        manager.getTaskById(7);
-        manager.getEpicById(1);
-        manager.getSubTaskById(2);
-        manager.getSubTaskById(3);
-        manager.getSubTaskById(4);
-
-        printHistory(manager);
-        System.out.println();
-
-        manager.getTaskById(7);
-        manager.getEpicById(1);
-        manager.getEpicById(5);
-        manager.getSubTaskById(4);
-        manager.getSubTaskById(2);
-        manager.getSubTaskById(3);
-        manager.getTaskById(6);
-
-        printHistory(manager);
-        System.out.println();
-
-        manager.deleteTaskById(6);
-
-        printHistory(manager);
-        System.out.println();
-
-        manager.deleteEpicById(1);
-
-        printHistory(manager);
-        System.out.println();
     }
 
     private static TaskManager getTaskManager() {
@@ -67,11 +30,11 @@ public class Main {
         SubTask subTask2 = new SubTask("Test", "Test", 1);
         SubTask subTask3 = new SubTask("Test", "Test", 1);
 
-        manager.addEpic(epic1);
-        manager.addSubTask(subTask1);
-        manager.addSubTask(subTask2);
-        manager.addSubTask(subTask3);
-        manager.addEpic(epic2);
+        manager.addTask(epic1);
+        manager.addTask(subTask1);
+        manager.addTask(subTask2);
+        manager.addTask(subTask3);
+        manager.addTask(epic2);
         manager.addTask(task1);
         manager.addTask(task2);
         return manager;
