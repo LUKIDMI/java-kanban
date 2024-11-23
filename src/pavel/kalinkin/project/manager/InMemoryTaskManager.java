@@ -272,7 +272,8 @@ public class InMemoryTaskManager implements TaskManager {
         int epicId = subTask.getEpicId();
 
         if (!epics.containsKey(epicId)) {
-            throw new NoSuchElementException("Эпик с ID " + epicId + " не найден");    }
+            throw new NoSuchElementException("Эпик с ID " + epicId + " не найден");
+        }
 
         subTasks.remove(subTaskId);
         historyManager.remove(subTaskId);
