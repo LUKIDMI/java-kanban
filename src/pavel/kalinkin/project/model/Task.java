@@ -27,7 +27,6 @@ public class Task {
         this.id = id;
     }
 
-
     public String getTaskName() {
         return name;
     }
@@ -78,7 +77,7 @@ public class Task {
         return String.format("%d,%s,%s,%s,%s,%s", getId(), getType(), getTaskName(), getStatus(), getDescription());
     }
 
-    public Task fromString(String task){
+    public Task fromString(String task) {
         String[] taskElements = task.split(",");
         int taskId = Integer.parseInt(taskElements[0]);
         String taskName = taskElements[2];
