@@ -104,7 +104,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 bw.write(subTask.toString() + "\n");
             }
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка при сохранении данных");
+            throw new ManagerSaveException("Ошибка при сохранении данных.");
         }
     }
 
@@ -119,7 +119,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 manager.restoreTask(task);
             }
         } catch (IOException e) {
-            throw new ManagerLoadExceptions("Ошибка при загрузке данных из файла");
+            throw new ManagerLoadExceptions("Ошибка при загрузке данных из файла.");
         }
         return manager;
     }

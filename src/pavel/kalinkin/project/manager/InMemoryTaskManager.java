@@ -33,9 +33,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTaskById(int taskId) {
         Task task = tasks.get(taskId);
-        if (task != null) {
-            historyManager.add(task);
+        if (task == null) {
+            throw new IllegalArgumentException("Задача не найдена.");
         }
+        historyManager.add(task);
         return task;
     }
 
@@ -90,6 +91,8 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(epicId);
         if (epic != null) {
             historyManager.add(epic);
+        } else {
+            throw new IllegalArgumentException("Эпик не может быть null.");
         }
         return epic;
     }
@@ -162,6 +165,8 @@ public class InMemoryTaskManager implements TaskManager {
                 subTasks.remove(subTaskId);
             }
             historyManager.remove(epicId);
+        } else {
+            throw new IllegalArgumentException("Эпика с таким ID нет.");
         }
     }
 
@@ -200,6 +205,8 @@ public class InMemoryTaskManager implements TaskManager {
         SubTask subTask = subTasks.get(subTaskId);
         if (subTask != null) {
             historyManager.add(subTask);
+        } else {
+            throw new IllegalArgumentException("Подзадача не может быть null.");
         }
         return subTask;
     }
@@ -230,6 +237,8 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(subTask.getEpicId());
         if (epic != null) {
             updateEpicStatus(epic);
+        } else {
+            throw new IllegalArgumentException("Эпик не может быть null.");
         }
     }
 
@@ -245,7 +254,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    // История задач
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
