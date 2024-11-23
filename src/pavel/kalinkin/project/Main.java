@@ -1,7 +1,6 @@
 package pavel.kalinkin.project;
 
 import pavel.kalinkin.project.manager.FileBackedTaskManager;
-import pavel.kalinkin.project.manager.Managers;
 import pavel.kalinkin.project.manager.TaskManager;
 import pavel.kalinkin.project.model.Epic;
 import pavel.kalinkin.project.model.SubTask;
@@ -12,59 +11,56 @@ import java.io.File;
 
 public class Main {
     public static void main(String[] args) {
-        File file = new File("src/pavel/kalinkin/project/data/data.csv");
-        TaskManager manager = FileBackedTaskManager.loadFromFile(file);
+        File file = new File("data.csv");
+        TaskManager manager = new FileBackedTaskManager(file);
+
+
+        Task task1 = new Task("Task 1", "Description 1", TaskStatus.NEW);
+        Task task2 = new Task("Task 2", "Description 2", TaskStatus.IN_PROGRESS);
+        Epic epic = new Epic("Epic 1", "Epic Description");
+        SubTask subTask1 = new SubTask("SubTask 1", "SubDescription", 3);
+
+        manager.addTask(task1);
+        manager.addTask(task2);
+        int epicId = manager.addTask(epic);
+        subTask1.setId(manager.addTask(subTask1));
 
         printAllTasks(manager);
 
-    }
+        System.out.println("История задач:");
+        printHistory(manager);
 
-    private static TaskManager getTaskManager() {
-        TaskManager manager = Managers.getDefault();
-
-        Epic epic1 = new Epic("Тест", "Тест");
-        Epic epic2 = new Epic("Тест", "Test");
-        Task task1 = new Task("Test", "Test", TaskStatus.NEW);
-        Task task2 = new Task("Test", "Test", TaskStatus.NEW);
-        SubTask subTask1 = new SubTask("Test", "Test", 1);
-        SubTask subTask2 = new SubTask("Test", "Test", 1);
-        SubTask subTask3 = new SubTask("Test", "Test", 1);
-
-        manager.addTask(epic1);
-        manager.addTask(subTask1);
-        manager.addTask(subTask2);
-        manager.addTask(subTask3);
-        manager.addTask(epic2);
-        manager.addTask(task1);
-        manager.addTask(task2);
-        return manager;
+        System.out.println("--------------------------------------------------------");
+        System.out.println("Ресет.");
+        System.out.println("--------------------------------------------------------");
+        manager = FileBackedTaskManager.loadFromFile(file);
+        printAllTasks(manager);
     }
 
     private static void printAllTasks(TaskManager manager) {
-        System.out.println("Задачи:");
+        System.out.println("Все задачи:");
         for (Task task : manager.getAllTasks()) {
             System.out.println(task);
         }
 
-        System.out.println("Эпики:");
+        System.out.println("Все эпики:");
         for (Epic epic : manager.getAllEpics()) {
             System.out.println(epic);
-
-            for (Task task : manager.getAllEpicSubTasks(epic.getId())) {
-                System.out.println("--> " + task);
+            for (SubTask subTask : manager.getAllEpicSubTasks(epic.getId())) {
+                System.out.println("  - " + subTask);
             }
         }
 
-        System.out.println("Подзадачи:");
-        for (Task subtask : manager.getAllSubTasks()) {
-            System.out.println(subtask);
+        System.out.println("Все подзадачи:");
+        for (SubTask subTask : manager.getAllSubTasks()) {
+            System.out.println(subTask);
         }
     }
 
-    public static void printHistory(TaskManager manager) {
-        System.out.println("История:");
+    private static void printHistory(TaskManager manager) {
         for (Task task : manager.getHistory()) {
             System.out.println(task);
         }
     }
 }
+

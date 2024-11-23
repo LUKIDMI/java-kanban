@@ -2,33 +2,20 @@ package pavel.kalinkin.project.manager;
 
 import pavel.kalinkin.project.model.Task;
 
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final Map<Integer, Node> tasksMap = new HashMap<>();
-    private Node firstNode;
-    private Node lastNode;
-
-    public static class Node {
-        Node next;
-        Node prev;
-        Task value;
-
-        public Node(Node next, Node prev, Task value) {
-            this.next = next;
-            this.prev = prev;
-            this.value = value;
-        }
-    }
+    private final Map<Integer, Node<Task>> historyMap = new HashMap<>();
+    private Node<Task> head;
+    private Node<Task> tail;
 
     @Override
     public void add(Task task) {
-        if (tasksMap.containsKey(task.getId())) {
+        if (task == null) {
+            return;
+        }
+        if (historyMap.containsKey(task.getId())) {
             remove(task.getId());
         }
         linkLast(task);
@@ -36,62 +23,59 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        if (tasksMap.containsKey(id)) {
-            Node node = tasksMap.get(id);
+        Node<Task> node = historyMap.remove(id);
+        if (node != null) {
             removeNode(node);
-            tasksMap.remove(id);
         }
-    }
-
-    private void linkLast(Task task) {
-        int taskId = task.getId();
-        final Node oldLast = lastNode;
-        Node newNode = new Node(null, lastNode, task);
-        lastNode = newNode;
-
-        if (oldLast == null) {
-            firstNode = newNode;
-        } else {
-            oldLast.next = newNode;
-        }
-
-        tasksMap.put(taskId, newNode);
-    }
-
-    private List<Task> getTasks() {
-        ArrayList<Task> tasks = new ArrayList<>();
-        Node n = firstNode;
-        for (; n != null; n = n.next) {
-            tasks.add(n.value);
-        }
-        return tasks;
-    }
-
-    private void removeNode(Node node) {
-        if (node == firstNode) {
-            firstNode = node.next;
-            if (firstNode != null) {
-                firstNode.prev = null;
-            } else {
-                lastNode = null;
-            }
-        } else if (node == lastNode) {
-            lastNode = node.prev;
-            if (lastNode != null) {
-                lastNode.next = null;
-            } else {
-                firstNode = null;
-            }
-        } else {
-            node.prev.next = node.next;
-            node.next.prev = node.prev;
-        }
-        tasksMap.remove(node.value.getId());
     }
 
     @Override
     public List<Task> getHistory() {
-        return getTasks();
+        List<Task> history = new ArrayList<>();
+        Node<Task> current = head;
+        while (current != null) {
+            history.add(current.data);
+            current = current.next;
+        }
+        return history;
+    }
+
+    private void linkLast(Task task) {
+        Node<Task> newNode = new Node<>(task, tail, null);
+        if (tail != null) {
+            tail.next = newNode;
+        }
+        tail = newNode;
+        if (head == null) {
+            head = newNode;
+        }
+        historyMap.put(task.getId(), newNode);
+    }
+
+    private void removeNode(Node<Task> node) {
+        if (node.prev != null) {
+            node.prev.next = node.next;
+        } else {
+            head = node.next;
+        }
+
+        if (node.next != null) {
+            node.next.prev = node.prev;
+        } else {
+            tail = node.prev;
+        }
+    }
+
+    private static class Node<T> {
+        private final T data;
+        private Node<T> prev;
+        private Node<T> next;
+
+        Node(T data, Node<T> prev, Node<T> next) {
+            this.data = data;
+            this.prev = prev;
+            this.next = next;
+        }
     }
 }
 

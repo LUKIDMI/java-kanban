@@ -1,18 +1,31 @@
-package pavel.kalinkin.project.test;
+package tasks;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pavel.kalinkin.project.model.Task;
 import pavel.kalinkin.project.model.TaskStatus;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 class TaskTest {
 
     @Test
-    public void shouldReturnTrueTaskEqualsTask() {
-        Task task1 = new Task("Test", "Test", TaskStatus.NEW, 1);
-        Task task2 = new Task("Test", "Test", TaskStatus.NEW, 1);
+    void testTaskCreation() {
+        Task task = new Task("Задача 1", "Описание задачи", TaskStatus.NEW);
 
-        Assertions.assertTrue(task1.equals(task2));
+        assertEquals("Задача 1", task.getTaskName(), "Название задачи должно совпадать.");
+        assertEquals("Описание задачи", task.getDescription(), "Описание задачи должно совпадать.");
+        assertEquals(TaskStatus.NEW, task.getStatus(), "Статус задачи должен быть NEW.");
+    }
+
+    @Test
+    void testSettersAndGetters() {
+        Task task = new Task("Задача 1", "Описание задачи");
+        task.setTaskName("Новое название");
+        task.setDescription("Новое описание");
+        task.setStatus(TaskStatus.DONE);
+
+        assertEquals("Новое название", task.getTaskName(), "Название задачи должно измениться.");
+        assertEquals("Новое описание", task.getDescription(), "Описание задачи должно измениться.");
+        assertEquals(TaskStatus.DONE, task.getStatus(), "Статус задачи должен измениться.");
     }
 }
