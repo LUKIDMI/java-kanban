@@ -3,7 +3,7 @@ package pavel.kalinkin.project.model;
 import java.util.Objects;
 
 public class Task {
-    protected String name;
+    private String name;
     protected String description;
     protected int id;
     protected TaskStatus status;
@@ -75,7 +75,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s", getId(), getType(), getTaskName(), getStatus(), getDescription());
+        return String.format("%d,%s,%s,%s,%s,%s", getId(), getType(), getTaskName(), getStatus(), getDescription());
     }
 
     public Task fromString(String task){
