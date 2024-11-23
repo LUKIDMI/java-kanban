@@ -22,7 +22,9 @@ class EpicTest {
     void testAddAndRemoveSubTaskIds() {
         Epic epic = new Epic("Эпик 1", "Описание эпика");
         SubTask subTask1 = new SubTask("Подзадача 1", "Описание подзадачи", 1);
-        SubTask subTask2 = new SubTask("Подзадача 2", "Описание подзадачи", 2); // Разные ID
+        subTask1.setId(1); // Устанавливаем уникальный ID
+        SubTask subTask2 = new SubTask("Подзадача 2", "Описание подзадачи", 1);
+        subTask2.setId(2); // Устанавливаем уникальный ID
 
         epic.addSubTaskId(subTask1);
         epic.addSubTaskId(subTask2);

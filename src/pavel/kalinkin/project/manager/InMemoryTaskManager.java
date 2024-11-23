@@ -226,6 +226,11 @@ public class InMemoryTaskManager implements TaskManager {
             throw new IllegalArgumentException("Подзадача не найдена или равна null.");
         }
         subTasks.put(subTask.getId(), subTask);
+
+        Epic epic = epics.get(subTask.getEpicId());
+        if (epic != null) {
+            updateEpicStatus(epic);
+        }
     }
 
     @Override
