@@ -29,6 +29,7 @@ public class Main {
 
         System.out.println("История задач:");
         printHistory(manager);
+        manager.deleteTaskById(1);
 
         System.out.println("--------------------------------------------------------");
         System.out.println("Ресет.");

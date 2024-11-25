@@ -17,10 +17,8 @@ class InMemoryTaskManagerTest {
     @BeforeEach
     void init() {
         manager = new InMemoryTaskManager();
-
         task = new Task("Задача 1", "Описание задачи");
         epic = new Epic("Эпик 1", "Описание эпика");
-        SubTask subTask = new SubTask("Подзадача 1", "Описание подзадачи", 1);
     }
 
     @Test
@@ -35,6 +33,7 @@ class InMemoryTaskManagerTest {
     @Test
     void testDeleteTaskById() {
         int taskId = manager.addTask(task);
+        assertNotNull(manager.getTaskById(taskId), "Задача должна быть добавлена.");
 
         manager.deleteTaskById(taskId);
 

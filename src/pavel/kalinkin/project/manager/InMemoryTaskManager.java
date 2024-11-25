@@ -34,7 +34,8 @@ public class InMemoryTaskManager implements TaskManager {
     public Task getTaskById(int taskId) {
         Task task = tasks.get(taskId);
         if (task == null) {
-            throw new IllegalArgumentException("Задача не найдена.");
+            System.out.println(("Задача не найдена."));
+            return null;
         }
         historyManager.add(task);
         return task;
