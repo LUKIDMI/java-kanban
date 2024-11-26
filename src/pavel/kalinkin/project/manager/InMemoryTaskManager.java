@@ -11,12 +11,14 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HistoryManager historyManager = new InMemoryHistoryManager();
     private int currentId = 0;
 
-    @Override
-    public int generateId() {
+    private int generateId() {
         return ++currentId;
     }
 
-    // Работа с обычными задачами
+    public void setCurrentId(int id) {
+        currentId = id;
+    }
+
     @Override
     public List<Task> getAllTasks() {
         return new ArrayList<>(tasks.values());

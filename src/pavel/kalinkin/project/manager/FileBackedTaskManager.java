@@ -110,17 +110,29 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
+        int maxId = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             br.readLine();
 
             String line;
             while ((line = br.readLine()) != null && !line.isBlank()) {
                 Task task = fromString(line);
+                int taskId = task.getId();
+                if(taskId > maxId)
+                    maxId = taskId;
                 manager.restoreTask(task);
+            }
+
+            for (SubTask subTask : manager.getAllSubTasks()) {
+                Epic epic = manager.getEpicById(subTask.getEpicId());
+                if (epic != null) {
+                    epic.addSubTaskId(subTask);
+                }
             }
         } catch (IOException e) {
             throw new ManagerLoadExceptions("Ошибка при загрузке данных из файла.");
         }
+        manager.setCurrentId(maxId);
         return manager;
     }
 
