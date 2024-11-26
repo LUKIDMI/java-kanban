@@ -35,6 +35,8 @@ public class Main {
         System.out.println("Ресет.");
         System.out.println("--------------------------------------------------------");
         manager = FileBackedTaskManager.loadFromFile(file);
+        Task task3 = new Task("Task 3", "Description 3", TaskStatus.NEW);
+        manager.addTask(task3);
         printAllTasks(manager);
     }
 
