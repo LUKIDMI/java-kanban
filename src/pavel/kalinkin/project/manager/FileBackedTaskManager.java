@@ -117,9 +117,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             String line;
             while ((line = br.readLine()) != null && !line.isBlank()) {
                 Task task = fromString(line);
-                int taskId = task.getId();
-                if(taskId > maxId)
-                    maxId = taskId;
+                maxId = Math.max(maxId, task.getId());
                 manager.restoreTask(task);
             }
 
