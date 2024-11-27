@@ -6,6 +6,7 @@ import pavel.kalinkin.project.model.*;
 
 import java.io.*;
 import java.util.List;
+import java.util.Map;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
@@ -123,7 +124,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
 
             for (SubTask subTask : manager.getAllSubTasks()) {
-                List<Epic> epics = manager.getAllEpics();
+                Map<Integer, Epic> epics = manager.getEpics();
                 Epic epic = epics.get(subTask.getEpicId());
                 if (epic != null) {
                     epic.addSubTaskId(subTask);

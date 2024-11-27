@@ -72,7 +72,10 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    // Работа с эпиками
+    protected Map<Integer, Epic> getEpics() {
+        return epics;
+    }
+
     @Override
     public List<Epic> getAllEpics() {
         return new ArrayList<>(epics.values());

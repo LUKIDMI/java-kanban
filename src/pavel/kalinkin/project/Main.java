@@ -14,7 +14,6 @@ public class Main {
         File file = new File("data.csv");
         TaskManager manager = new FileBackedTaskManager(file);
 
-
         Task task1 = new Task("Task 1", "Description 1", TaskStatus.NEW);
         Task task2 = new Task("Task 2", "Description 2", TaskStatus.IN_PROGRESS);
         Epic epic = new Epic("Epic 1", "Epic Description");
