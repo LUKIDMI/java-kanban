@@ -108,7 +108,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public static FileBackedTaskManager loadFromFile(File file) {
+    public FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
         int maxId = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -122,7 +122,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
 
             for (SubTask subTask : manager.getAllSubTasks()) {
-                Epic epic = manager.getEpicById(subTask.getEpicId());
+                Epic epic = epics.get(subTask.getEpicId());
                 if (epic != null) {
                     epic.addSubTaskId(subTask);
                 }
