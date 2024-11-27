@@ -1,5 +1,6 @@
 package pavel.kalinkin.project.model;
 
+
 public class SubTask extends Task {
     private final int epicId;
 
@@ -28,3 +29,4 @@ public class SubTask extends Task {
         return TaskType.SUBTASK;
     }
 }
+

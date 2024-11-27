@@ -27,7 +27,6 @@ public class Task {
         this.id = id;
     }
 
-
     public String getTaskName() {
         return name;
     }
@@ -76,15 +75,6 @@ public class Task {
     @Override
     public String toString() {
         return String.format("%d,%s,%s,%s,%s", getId(), getType(), getTaskName(), getStatus(), getDescription());
-    }
-
-    public Task fromString(String task){
-        String[] taskElements = task.split(",");
-        int taskId = Integer.parseInt(taskElements[0]);
-        String taskName = taskElements[2];
-        TaskStatus taskStatus = TaskStatus.valueOf(taskElements[3]);
-        String taskDescription = taskElements[4];
-        return new Task(taskId, taskName, taskDescription, taskStatus);
     }
 
     public TaskType getType() {

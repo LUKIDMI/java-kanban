@@ -6,8 +6,8 @@ import pavel.kalinkin.project.model.Task;
 
 import java.util.List;
 
+
 public interface TaskManager {
-    int generateId();
 
     List<Task> getAllTasks();
 

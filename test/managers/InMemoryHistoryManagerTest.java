@@ -1,61 +1,44 @@
-package pavel.kalinkin.project.test;
+package managers;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pavel.kalinkin.project.manager.InMemoryTaskManager;
-import pavel.kalinkin.project.manager.TaskManager;
+import pavel.kalinkin.project.manager.InMemoryHistoryManager;
+import pavel.kalinkin.project.manager.HistoryManager;
 import pavel.kalinkin.project.model.Task;
 import pavel.kalinkin.project.model.TaskStatus;
 
-
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
 
-    TaskManager manager;
-    Task task1;
-    Task task2;
-
+    private HistoryManager historyManager;
+    private Task task;
 
     @BeforeEach
-    void setData() {
-        manager = new InMemoryTaskManager();
-        task1 = new Task("Test", "Test", TaskStatus.NEW);
-        task2 = new Task("Test", "Test", TaskStatus.NEW);
-        manager.addTask(task1);
-        manager.addTask(task2);
-        manager.getTaskById(task1.getId());
-        manager.getTaskById(task2.getId());
+    void init() {
+        historyManager = new InMemoryHistoryManager();
+
+        task = new Task("Задача 1", "Описание задачи", TaskStatus.NEW);
+        task.setId(1);
     }
 
     @Test
-    void addTask() {
-        final String taskName = task1.getTaskName();
-        final String taskDescription = task1.getTaskName();
-        final List<Task> history = manager.getHistory();
-        Assertions.assertNotNull(history, "История не пустая.");
-        Assertions.assertEquals(2, history.size(), "История не пустая.");
+    void testAddTaskToHistory() {
+        historyManager.add(task);
 
-        Task inHistoryTask = history.getFirst();
-        Assertions.assertEquals(task1, inHistoryTask, "Задачи не совпадают.");
-        Assertions.assertEquals(taskName, inHistoryTask.getTaskName(), "Названия не совпадают");
-        Assertions.assertEquals(taskDescription, inHistoryTask.getDescription(), "Описание не совпадает");
+        List<Task> history = historyManager.getHistory();
+        assertTrue(history.contains(task), "Задача должна быть в истории.");
     }
 
     @Test
-    void shouldReturnTrueHistoryContainsNewTask() {
-        List<Task> tasks = manager.getHistory();
-        Assertions.assertTrue(tasks.contains(task1));
-    }
+    void testRemoveTaskFromHistory() {
+        historyManager.add(task);
 
-    @Test
-    void shouldReturnTrueDeleteTask() {
-        List<Task> tasks = manager.getHistory();
-        Assertions.assertTrue(tasks.contains(task2));
-        manager.deleteTaskById(task2.getId());
-        tasks = manager.getHistory();
-        Assertions.assertFalse(tasks.contains(task2));
+        historyManager.remove(task.getId());
+
+        List<Task> history = historyManager.getHistory();
+        assertFalse(history.contains(task), "Задача должна быть удалена из истории.");
     }
 }
