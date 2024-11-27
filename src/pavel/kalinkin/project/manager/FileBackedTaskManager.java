@@ -5,7 +5,6 @@ import pavel.kalinkin.project.exceptions.ManagerSaveException;
 import pavel.kalinkin.project.model.*;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
