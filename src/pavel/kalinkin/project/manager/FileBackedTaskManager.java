@@ -5,6 +5,8 @@ import pavel.kalinkin.project.exceptions.ManagerSaveException;
 import pavel.kalinkin.project.model.*;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
@@ -108,7 +110,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public FileBackedTaskManager loadFromFile(File file) {
+    public static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
         int maxId = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -122,6 +124,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
 
             for (SubTask subTask : manager.getAllSubTasks()) {
+                List<Epic> epics = manager.getAllEpics();
                 Epic epic = epics.get(subTask.getEpicId());
                 if (epic != null) {
                     epic.addSubTaskId(subTask);
