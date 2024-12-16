@@ -2,6 +2,7 @@ package pavel.kalinkin.project.manager;
 
 import pavel.kalinkin.project.model.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -125,6 +126,26 @@ public class InMemoryTaskManager implements TaskManager {
         existingEpic.setDescription(epic.getDescription());
 
         updateEpicStatus(existingEpic);
+    }
+
+    public void updateEpicTime(Epic epic) {
+        if (epic == null || !epics.containsKey(epic.getId())) {
+            throw new IllegalArgumentException("Эпик не найден или равен null.");
+        }
+        LocalDateTime startTime = LocalDateTime.MIN;
+        LocalDateTime endTime = LocalDateTime.MAX;
+        for (Integer epicSubTaskId : epic.getEpicSubTasks()) {
+            SubTask subTask = subTasks.get(epicSubTaskId);
+            if (subTask != null) {
+                if(subTask.getEndTime().isAfter(endTime))
+                    endTime = subTask.getEndTime();
+            }
+        }
+
+    }
+
+    private LocalDateTime getEpicStartTime(Epic epic) {
+
     }
 
     private void updateEpicStatus(Epic epic) {

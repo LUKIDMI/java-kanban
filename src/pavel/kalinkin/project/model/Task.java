@@ -1,5 +1,7 @@
 package pavel.kalinkin.project.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -7,24 +9,37 @@ public class Task {
     protected String description;
     protected int id;
     protected TaskStatus status;
+    protected Duration duration;
+    protected LocalDateTime startTime;
 
-    public Task(String taskName, String description) {
-        this.name = taskName;
-        this.description = description;
-        this.status = TaskStatus.NEW;
-    }
-
-    public Task(String taskName, String description, TaskStatus status) {
+    public Task(String taskName, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
         this.name = taskName;
         this.description = description;
         this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
-    public Task(int id, String taskName, String description, TaskStatus status) {
-        this.name = taskName;
-        this.description = description;
-        this.status = status;
+    public Task(int id, String name, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
         this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public Task(String taskName, String description, TaskStatus taskStatus) {
+        this.name = taskName;
+        this.description = description;
+        this.status = taskStatus;
+    }
+
+    public Task(int id, String taskName, String description, TaskStatus taskStatus) {
+        this.id = id;
+        this.name = taskName;
+        this.description = description;
+        this.status = taskStatus;
     }
 
     public String getTaskName() {
@@ -57,6 +72,14 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(duration);
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
     @Override

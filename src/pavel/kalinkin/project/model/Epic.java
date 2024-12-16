@@ -1,10 +1,15 @@
 package pavel.kalinkin.project.model;
 
+import pavel.kalinkin.project.manager.TaskManager;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
     private final List<Integer> epicSubTasksId = new ArrayList<>();
+    private LocalDateTime endTime;
 
     public Epic(String taskName, String description) {
         super(taskName, description, TaskStatus.NEW);
@@ -35,6 +40,7 @@ public class Epic extends Task {
             throw new IllegalArgumentException("SubTask с таким ID не найден");
         }
     }
+
 
     @Override
     public String toString() {

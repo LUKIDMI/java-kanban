@@ -1,17 +1,19 @@
 package pavel.kalinkin.project.model;
 
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class SubTask extends Task {
     private final int epicId;
 
-    public SubTask(String taskName, String description, int epicId) {
-        super(taskName, description);
-        this.status = TaskStatus.NEW;
+    public SubTask(int id, String taskName, String description, TaskStatus status, int epicId) {
+        super(id, taskName, description, status);
         this.epicId = epicId;
     }
 
-    public SubTask(int id, String taskName, String description, TaskStatus status, int epicId) {
-        super(id, taskName, description, status);
+    public SubTask(int id, String taskName, String description, TaskStatus status, Duration duration, LocalDateTime startTime, int epicId) {
+        super(id, taskName, description, status, duration, startTime);
         this.epicId = epicId;
     }
 
