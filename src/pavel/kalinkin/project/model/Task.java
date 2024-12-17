@@ -12,12 +12,16 @@ public class Task {
     protected Duration duration;
     protected LocalDateTime startTime;
 
-    public Task(String taskName, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
+    public Task(String taskName, String description) {
         this.name = taskName;
         this.description = description;
-        this.status = status;
-        this.duration = duration;
-        this.startTime = startTime;
+        this.status = TaskStatus.NEW;
+    }
+
+    public Task(int id, String taskName, String description) {
+        this.id = id;
+        this.name = taskName;
+        this.description = description;
     }
 
     public Task(int id, String name, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
@@ -27,19 +31,6 @@ public class Task {
         this.status = status;
         this.duration = duration;
         this.startTime = startTime;
-    }
-
-    public Task(String taskName, String description, TaskStatus taskStatus) {
-        this.name = taskName;
-        this.description = description;
-        this.status = taskStatus;
-    }
-
-    public Task(int id, String taskName, String description, TaskStatus taskStatus) {
-        this.id = id;
-        this.name = taskName;
-        this.description = description;
-        this.status = taskStatus;
     }
 
     public String getTaskName() {
@@ -74,6 +65,12 @@ public class Task {
         this.status = status;
     }
 
+    public Duration getDuration() {
+        return this.duration;
+    }
+
+
+
     public LocalDateTime getEndTime() {
         return startTime.plus(duration);
     }
@@ -97,7 +94,15 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s", getId(), getType(), getTaskName(), getStatus(), getDescription());
+        return "Task{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", id=" + id +
+                ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                ", endTimeTime=" + getEndTime() +
+                '}';
     }
 
     public TaskType getType() {

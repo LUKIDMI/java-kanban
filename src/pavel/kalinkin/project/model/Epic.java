@@ -12,11 +12,12 @@ public class Epic extends Task {
     private LocalDateTime endTime;
 
     public Epic(String taskName, String description) {
-        super(taskName, description, TaskStatus.NEW);
+        super(taskName, description);
+        this.status = TaskStatus.NEW;
     }
 
-    public Epic(int id, String taskName, String description, TaskStatus taskStatus) {
-        super(id, taskName, description, taskStatus);
+    public Epic(int id, String taskName, String description) {
+        super(id, taskName, description);
     }
 
     public List<Integer> getEpicSubTasks() {

@@ -5,6 +5,8 @@ import pavel.kalinkin.project.exceptions.ManagerSaveException;
 import pavel.kalinkin.project.model.*;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -94,15 +96,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             bw.write("id,type,name,status,description,epic\n");
 
             for (Task task : getAllTasks()) {
-                bw.write(task.toString() + "\n");
+                bw.write(CSVTaskFormatter.toString(task) + "\n");
             }
 
             for (Epic epic : getAllEpics()) {
-                bw.write(epic.toString() + "\n");
+                bw.write(CSVTaskFormatter.toString(epic) + "\n");
             }
 
             for (SubTask subTask : getAllSubTasks()) {
-                bw.write(subTask.toString() + "\n");
+                bw.write(CSVTaskFormatter.toString(subTask) + "\n");
             }
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при сохранении данных.");
@@ -117,7 +119,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
             String line;
             while ((line = br.readLine()) != null && !line.isBlank()) {
-                Task task = fromString(line);
+                Task task = CSVTaskFormatter.fromString(line);
                 maxId = Math.max(maxId, task.getId());
                 manager.restoreTask(task);
             }
@@ -141,23 +143,5 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             case EPIC -> epics.put(task.getId(), (Epic) task);
             case SUBTASK -> subTasks.put(task.getId(), (SubTask) task);
         }
-    }
-
-    private static Task fromString(String taskLine) {
-        String[] attributes = taskLine.split(",");
-        int id = Integer.parseInt(attributes[0]);
-        TaskType type = TaskType.valueOf(attributes[1]);
-        String name = attributes[2];
-        TaskStatus status = TaskStatus.valueOf(attributes[3]);
-        String description = attributes[4];
-
-        return switch (type) {
-            case TASK -> new Task(id, name, description, status);
-            case EPIC -> new Epic(id, name, description, status);
-            case SUBTASK -> {
-                int epicId = Integer.parseInt(attributes[5]);
-                yield new SubTask(id, name, description, status, epicId);
-            }
-        };
     }
 }

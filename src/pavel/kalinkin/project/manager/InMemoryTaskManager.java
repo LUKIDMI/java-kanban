@@ -129,22 +129,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public void updateEpicTime(Epic epic) {
-        if (epic == null || !epics.containsKey(epic.getId())) {
-            throw new IllegalArgumentException("Эпик не найден или равен null.");
-        }
-        LocalDateTime startTime = LocalDateTime.MIN;
-        LocalDateTime endTime = LocalDateTime.MAX;
-        for (Integer epicSubTaskId : epic.getEpicSubTasks()) {
-            SubTask subTask = subTasks.get(epicSubTaskId);
-            if (subTask != null) {
-                if(subTask.getEndTime().isAfter(endTime))
-                    endTime = subTask.getEndTime();
-            }
-        }
 
-    }
-
-    private LocalDateTime getEpicStartTime(Epic epic) {
 
     }
 
