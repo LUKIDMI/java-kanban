@@ -38,6 +38,9 @@ public class InMemoryTaskManager implements TaskManager {
         tasks.values().stream()
                 .map(Task::getId)
                 .forEach(historyManager::remove);
+
+        prioritizedTasks.removeIf(task -> task.getType() == TaskType.TASK);
+
         tasks.clear();
     }
 
@@ -133,8 +136,6 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setId(id);
         epics.put(id, epic);
 
-        addPrioritizedTasks(epic);
-
         return id;
     }
 
@@ -149,38 +150,28 @@ public class InMemoryTaskManager implements TaskManager {
         existingEpic.setTaskName(epic.getTaskName());
         existingEpic.setDescription(epic.getDescription());
 
-        updateEpicStatus(existingEpic);
-        updateEpicTime(existingEpic);
+
     }
 
     //Обновление startTime и endTime для эпика
     private void updateEpicTime(Epic epic) {
         Objects.requireNonNull(epic, "Эпик не может быть null.");
 
-        Optional<LocalDateTime> minStartTime = epic.getEpicSubTasks().stream()
+        epic.setDuration(epic.getEpicSubTasks().stream()
                 .map(subTasks::get)
+                .map(SubTask::getDuration)
                 .filter(Objects::nonNull)
+                .reduce(Duration.ZERO, Duration::plus));
+
+        epic.setStartTime(epic.getEpicSubTasks().stream()
+                .map(subTasks::get)
                 .map(SubTask::getStartTime)
-                .min(Comparator.naturalOrder());
+                .min(Comparator.naturalOrder()).orElse(null));
 
-        Optional<LocalDateTime> maxEndTime = epic.getEpicSubTasks().stream()
+        epic.setEndTime(epic.getEpicSubTasks().stream()
                 .map(subTasks::get)
-                .filter(Objects::nonNull)
                 .map(SubTask::getEndTime)
-                .max(Comparator.naturalOrder());
-
-        LocalDateTime startTime = minStartTime.orElse(null);
-        LocalDateTime endTime = maxEndTime.orElse(null);
-
-
-        epic.setStartTime(startTime);
-        epic.setEndTime(endTime);
-
-        if (startTime != null && endTime != null) {
-            epic.setDuration(Duration.between(startTime, endTime));
-        } else {
-            epic.setDuration(null);
-        }
+                .max(Comparator.naturalOrder()).orElse(null));
     }
 
     //Обновление статуса эпика
