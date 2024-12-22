@@ -2,9 +2,8 @@ package pavel.kalinkin.project.model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-import java.util.Optional;
+
 
 public class Task {
     protected String name;
