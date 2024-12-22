@@ -80,6 +80,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         tasks.put(task.getId(), task);
 
+        prioritizedTasks.remove(task);
         addPrioritizedTasks(task);
     }
 
@@ -220,7 +221,7 @@ public class InMemoryTaskManager implements TaskManager {
                     historyManager.remove(subtaskId);
                 }
             }
-
+            historyManager.remove(epicId);
         } else {
             throw new IllegalArgumentException("Эпика с таким ID нет.");
         }
@@ -250,9 +251,9 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllSubTasks() {
         for (SubTask subtask : subTasks.values()) {
             historyManager.remove(subtask.getId());
+            prioritizedTasks.remove(subtask);
         }
 
-        prioritizedTasks.removeAll(subTasks.values());
         subTasks.clear();
 
         for (Epic epic : epics.values()) {
@@ -290,9 +291,10 @@ public class InMemoryTaskManager implements TaskManager {
         subTask.setId(id);
         subTasks.put(id, subTask);
         epic.addSubTaskId(subTask);
-
+        updateEpicStatus(epic);
+        updateSubTask(subTask);
         updateEpicTime(epic);
-
+        prioritizedTasks.remove(subTask);
         addPrioritizedTasks(subTask);
 
         return id;
@@ -305,6 +307,7 @@ public class InMemoryTaskManager implements TaskManager {
             throw new IllegalArgumentException("Подзадача не найдена или равна null.");
         }
 
+        prioritizedTasks.remove(subTask);
         addPrioritizedTasks(subTask);
 
         subTasks.put(subTask.getId(), subTask);
