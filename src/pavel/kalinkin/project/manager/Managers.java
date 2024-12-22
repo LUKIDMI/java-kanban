@@ -6,7 +6,7 @@ import pavel.kalinkin.project.interfaces.TaskManager;
 import java.io.File;
 
 public class Managers {
-    private Managers(){
+    private Managers() {
     }
 
     public static TaskManager getDefault() {
