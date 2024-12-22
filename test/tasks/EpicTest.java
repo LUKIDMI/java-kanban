@@ -5,6 +5,9 @@ import pavel.kalinkin.project.model.Epic;
 import pavel.kalinkin.project.model.SubTask;
 import pavel.kalinkin.project.model.TaskStatus;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EpicTest {
@@ -21,10 +24,11 @@ class EpicTest {
     @Test
     void testAddAndRemoveSubTaskIds() {
         Epic epic = new Epic("Эпик 1", "Описание эпика");
-        SubTask subTask1 = new SubTask("Подзадача 1", "Описание подзадачи", 1);
-        subTask1.setId(1); // Устанавливаем уникальный ID
-        SubTask subTask2 = new SubTask("Подзадача 2", "Описание подзадачи", 1);
-        subTask2.setId(2); // Устанавливаем уникальный ID
+        SubTask subTask1 = new SubTask("Подзадача 1", "Описание подзадачи", Duration.ofHours(1), LocalDateTime.of(2024, 5, 5, 10, 10), 1);
+        subTask1.setId(1);
+        SubTask subTask2 = new SubTask("Подзадача 2", "Описание подзадачи", Duration.ofHours(1), LocalDateTime.of(2024, 5, 5, 12, 10), 1);
+
+        subTask2.setId(2);
 
         epic.addSubTaskId(subTask1);
         epic.addSubTaskId(subTask2);

@@ -1,5 +1,6 @@
 package pavel.kalinkin.project.manager;
 
+import pavel.kalinkin.project.interfaces.HistoryManager;
 import pavel.kalinkin.project.model.Task;
 
 import java.util.*;

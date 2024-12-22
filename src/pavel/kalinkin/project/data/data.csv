@@ -1,6 +1,6 @@
-id,type,name,status,description.epic
-1,TASK,Test,NEW,Test
-2,TASK,Test,NEW,Test
-3,EPIC,Тест,NEW,Тест
-4,EPIC,Тест,NEW,Test
-5,SUBTASK,TEST,NEW,TEST,3
+id,type,name,status,description,duration,startTime,endTime,epicId
+1,TASK,Задача,NEW,Описание,60,05.10.2022 12:30,05.10.2022 13:30,
+6,TASK,Задача,NEW,Описание,null,null,null,
+2,EPIC,Эпик 1,NEW,Описание,60,05.10.2022 05:30,05.10.2022 06:30,
+5,EPIC,Эпик 2,NEW,Описание,null,null,null,
+3,SUBTASK,Подзадача 1,NEW,Описание,60,05.10.2022 05:30,05.10.2022 06:30,2

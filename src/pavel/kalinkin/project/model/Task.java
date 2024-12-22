@@ -2,7 +2,9 @@ package pavel.kalinkin.project.model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Task {
     protected String name;
@@ -16,6 +18,14 @@ public class Task {
         this.name = taskName;
         this.description = description;
         this.status = TaskStatus.NEW;
+    }
+
+    public Task(String name, String description, Duration duration, LocalDateTime startTime) {
+        this.name = name;
+        this.description = description;
+        this.status = TaskStatus.NEW;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
     public Task(int id, String taskName, String description) {
@@ -32,6 +42,7 @@ public class Task {
         this.duration = duration;
         this.startTime = startTime;
     }
+
 
     public String getTaskName() {
         return name;
@@ -69,14 +80,12 @@ public class Task {
         return this.duration;
     }
 
-
-
     public LocalDateTime getEndTime() {
-        return startTime.plus(duration);
+        return (this.startTime != null) ? this.startTime.plus(this.duration) : null;
     }
 
     public LocalDateTime getStartTime() {
-        return startTime;
+        return this.startTime;
     }
 
     @Override
@@ -95,9 +104,9 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", id=" + id +
                 ", status=" + status +
                 ", duration=" + duration +
                 ", startTime=" + startTime +

@@ -1,18 +1,35 @@
 package tasks;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pavel.kalinkin.project.model.Epic;
 import pavel.kalinkin.project.model.SubTask;
 import pavel.kalinkin.project.model.TaskStatus;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SubTaskTest {
+    Epic epic;
+    SubTask subTask;
+
+    @BeforeEach
+    void setUp() {
+        epic = new Epic(1, "Эпик", "Описание эпика");
+        subTask = new SubTask(
+                2,
+                "Подзадача 1",
+                "Описание подзадачи",
+                TaskStatus.NEW,
+                Duration.ofHours(1),
+                LocalDateTime.of(2024, 1, 2, 1, 0),
+                epic.getId());
+    }
 
     @Test
     void testSubTaskCreation() {
-
-        SubTask subTask = new SubTask("Подзадача 1", "Описание подзадачи", 1);
-
         assertEquals("Подзадача 1", subTask.getTaskName(), "Название подзадачи должно совпадать.");
         assertEquals("Описание подзадачи", subTask.getDescription(), "Описание подзадачи должно совпадать.");
         assertEquals(1, subTask.getEpicId(), "ID эпика должен совпадать.");
@@ -21,7 +38,7 @@ class SubTaskTest {
 
     @Test
     void testSettersAndGetters() {
-        SubTask subTask = new SubTask("Подзадача 1", "Описание подзадачи", 1);
+
         subTask.setTaskName("Новое название");
         subTask.setDescription("Новое описание");
         subTask.setStatus(TaskStatus.DONE);
