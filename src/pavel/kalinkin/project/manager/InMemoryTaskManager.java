@@ -78,9 +78,8 @@ public class InMemoryTaskManager implements TaskManager {
             throw new IllegalArgumentException("Задача не найдена или равна null.");
         }
 
-        tasks.put(task.getId(), task);
-
         prioritizedTasks.remove(task);
+        tasks.put(task.getId(), task);
         addPrioritizedTasks(task);
     }
 
@@ -308,9 +307,10 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
         prioritizedTasks.remove(subTask);
-        addPrioritizedTasks(subTask);
 
         subTasks.put(subTask.getId(), subTask);
+        addPrioritizedTasks(subTask);
+
 
         Epic epic = epics.get(subTask.getEpicId());
         if (epic != null) {
