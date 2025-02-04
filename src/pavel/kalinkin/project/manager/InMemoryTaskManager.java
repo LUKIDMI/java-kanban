@@ -78,9 +78,11 @@ public class InMemoryTaskManager implements TaskManager {
             throw new IllegalArgumentException("Задача не найдена или равна null.");
         }
 
-        prioritizedTasks.remove(task);
+        Task oldTask = tasks.remove(task.getId());
+        prioritizedTasks.remove(oldTask);
         tasks.put(task.getId(), task);
         addPrioritizedTasks(task);
+
     }
 
     //Удаляем задачу по id
@@ -192,7 +194,6 @@ public class InMemoryTaskManager implements TaskManager {
                 .filter(subtask -> subtask.getStatus() == TaskStatus.NEW)
                 .count();
 
-
         long doneCount = subTaskIds.stream()
                 .map(subTasks::get)
                 .filter(Objects::nonNull)
@@ -293,7 +294,7 @@ public class InMemoryTaskManager implements TaskManager {
         updateEpicStatus(epic);
         updateSubTask(subTask);
         updateEpicTime(epic);
-        prioritizedTasks.remove(subTask);
+
         addPrioritizedTasks(subTask);
 
         return id;
@@ -306,7 +307,8 @@ public class InMemoryTaskManager implements TaskManager {
             throw new IllegalArgumentException("Подзадача не найдена или равна null.");
         }
 
-        prioritizedTasks.remove(subTask);
+        SubTask oldSubTask = subTasks.remove(subTask.getId());
+        prioritizedTasks.remove(oldSubTask);
 
         subTasks.put(subTask.getId(), subTask);
         addPrioritizedTasks(subTask);
