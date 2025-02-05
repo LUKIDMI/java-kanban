@@ -1,2 +1,2 @@
-id,type,name,status,description,epic
-1,TASK,Задача 1,NEW,Описание задачи
+id,type,name,status,description,duration,startTime,endTime,epicId
+1,TASK,Задача 1,NEW,Описание задачи,null,null,null,

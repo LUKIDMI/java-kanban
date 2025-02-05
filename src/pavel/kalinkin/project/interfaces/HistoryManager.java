@@ -1,4 +1,4 @@
-package pavel.kalinkin.project.manager;
+package pavel.kalinkin.project.interfaces;
 
 import pavel.kalinkin.project.model.Task;
 

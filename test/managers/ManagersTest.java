@@ -1,7 +1,9 @@
-package pavel.kalinkin.project.test;
+package managers;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import pavel.kalinkin.project.interfaces.HistoryManager;
+import pavel.kalinkin.project.interfaces.TaskManager;
 import pavel.kalinkin.project.manager.*;
 
 class ManagersTest {

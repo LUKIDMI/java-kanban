@@ -1,42 +1,51 @@
 package pavel.kalinkin.project;
 
 import pavel.kalinkin.project.manager.FileBackedTaskManager;
-import pavel.kalinkin.project.manager.TaskManager;
+import pavel.kalinkin.project.interfaces.TaskManager;
 import pavel.kalinkin.project.model.Epic;
 import pavel.kalinkin.project.model.SubTask;
 import pavel.kalinkin.project.model.Task;
-import pavel.kalinkin.project.model.TaskStatus;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
     public static void main(String[] args) {
-        File file = new File("data.csv");
+        File file = new File("C:\\Users\\LUKIDMI\\IdeaProjects\\java-kanban\\src\\pavel\\kalinkin\\project\\data\\data.csv");
         TaskManager manager = new FileBackedTaskManager(file);
 
-        Task task1 = new Task("Task 1", "Description 1", TaskStatus.NEW);
-        Task task2 = new Task("Task 2", "Description 2", TaskStatus.IN_PROGRESS);
-        Epic epic = new Epic("Epic 1", "Epic Description");
-        SubTask subTask1 = new SubTask("SubTask 1", "SubDescription", 3);
-
-        manager.addTask(task1);
-        manager.addTask(task2);
-        int epicId = manager.addTask(epic);
-        subTask1.setId(manager.addTask(subTask1));
+        manager.addTask(new Task("Задача", "Описание", Duration.ofHours(1), LocalDateTime.of(2022, 10, 5, 12, 30)));
+        manager.addTask(new Epic("Эпик 1", "Описание"));
+        manager.addTask(new SubTask("Подзадача 1", "Описание", Duration.ofHours(1), LocalDateTime.of(2022, 10, 5, 5, 30), 2));
+        manager.addTask(new SubTask("Подзадача 2", "Описание", Duration.ofHours(1), LocalDateTime.of(2022, 10, 5, 7, 30), 2));
+        manager.addTask(new Epic("Эпик 2", "Описание"));
+        manager.addTask(new Task("Задача", "Описание"));
 
         printAllTasks(manager);
 
-        System.out.println("История задач:");
-        printHistory(manager);
-        manager.deleteTaskById(1);
+        System.out.println("-----------------------------------");
+        System.out.println("После загрузки из файла");
+        System.out.println("-----------------------------------");
 
-        System.out.println("--------------------------------------------------------");
-        System.out.println("Ресет.");
-        System.out.println("--------------------------------------------------------");
         manager = FileBackedTaskManager.loadFromFile(file);
-        Task task3 = new Task("Task 3", "Description 3", TaskStatus.NEW);
-        manager.addTask(task3);
+
         printAllTasks(manager);
+
+        System.out.println("-----------------------------------");
+        System.out.println("Список задач по приоритету");
+        System.out.println("-----------------------------------");
+        manager.getPrioritizedTasks().forEach(System.out::println);
+
+        manager.deleteSubTaskById(4);
+
+        System.out.println("-----------------------------------");
+        System.out.println("После удаления подзадачи");
+        System.out.println("-----------------------------------");
+
+        printAllTasks(manager);
+        System.out.println("-----------------------------------");
+        manager.getPrioritizedTasks().forEach(System.out::println);
     }
 
     private static void printAllTasks(TaskManager manager) {
@@ -45,6 +54,8 @@ public class Main {
             System.out.println(task);
         }
 
+        System.out.println();
+
         System.out.println("Все эпики:");
         for (Epic epic : manager.getAllEpics()) {
             System.out.println(epic);
@@ -52,6 +63,8 @@ public class Main {
                 System.out.println("  - " + subTask);
             }
         }
+
+        System.out.println();
 
         System.out.println("Все подзадачи:");
         for (SubTask subTask : manager.getAllSubTasks()) {

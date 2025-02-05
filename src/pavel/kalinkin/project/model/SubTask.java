@@ -1,17 +1,31 @@
 package pavel.kalinkin.project.model;
 
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class SubTask extends Task {
     private final int epicId;
 
-    public SubTask(String taskName, String description, int epicId) {
+    public SubTask(String taskName, String description) {
         super(taskName, description);
         this.status = TaskStatus.NEW;
+        this.epicId = 0;
+    }
+
+    public SubTask(String name, String description, Duration duration, LocalDateTime startTime) {
+        super(name, description, duration, startTime);
+        this.status = TaskStatus.NEW;
+        epicId = 0;
+    }
+
+    public SubTask(String name, String description, Duration duration, LocalDateTime startTime, int epicId) {
+        super(name, description, duration, startTime);
         this.epicId = epicId;
     }
 
-    public SubTask(int id, String taskName, String description, TaskStatus status, int epicId) {
-        super(id, taskName, description, status);
+    public SubTask(int id, String taskName, String description, TaskStatus status, Duration duration, LocalDateTime startTime, int epicId) {
+        super(id, taskName, description, status, duration, startTime);
         this.epicId = epicId;
     }
 
@@ -19,9 +33,19 @@ public class SubTask extends Task {
         return epicId;
     }
 
+
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s,%d", getId(), getType(), getTaskName(), getStatus(), getDescription(), getEpicId());
+        return "SubTask{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                ", endTime=" + getEndTime() +
+                ", epicId=" + epicId +
+                '}';
     }
 
     @Override

@@ -1,10 +1,11 @@
-package pavel.kalinkin.project.manager;
+package pavel.kalinkin.project.interfaces;
 
 import pavel.kalinkin.project.model.Epic;
 import pavel.kalinkin.project.model.SubTask;
 import pavel.kalinkin.project.model.Task;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface TaskManager {
@@ -48,4 +49,6 @@ public interface TaskManager {
     void deleteSubTaskById(int subTaskId);
 
     List<Task> getHistory();
+
+    Set<Task> getPrioritizedTasks();
 }

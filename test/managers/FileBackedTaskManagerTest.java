@@ -1,21 +1,28 @@
 package managers;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import pavel.kalinkin.project.exceptions.ManagerLoadExceptions;
+import pavel.kalinkin.project.manager.FileBackedTaskManager;
+import pavel.kalinkin.project.model.*;
 
-import pavel.kalinkin.project.manager.InMemoryTaskManager;
-import pavel.kalinkin.project.model.Epic;
-import pavel.kalinkin.project.model.SubTask;
-import pavel.kalinkin.project.model.Task;
-import pavel.kalinkin.project.model.TaskStatus;
-
+import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-class InMemoryTaskManagerTest extends AbstractTaskManagerTest<InMemoryTaskManager> {
+import static org.junit.jupiter.api.Assertions.*;
+
+class FileBackedTaskManagerTest extends AbstractTaskManagerTest<FileBackedTaskManager> {
+
+    File file;
+    File noFile;
 
     @BeforeEach
     public void setUp() {
-        manager = new InMemoryTaskManager();
+
+        file = new File("C:\\Users\\LUKIDMI\\IdeaProjects\\java-kanban\\test\\data\\data.csv");
+        noFile = new File("C:\\Users\\LUKIDMI\\IdeaProjects\\java-kanban\\test\\data\\corrupted_file.csv");
+        manager = new FileBackedTaskManager(file);
         task1 = new Task("Задача 1", "Описание 1", Duration.ofHours(1), LocalDateTime.of(2024, 1, 1, 1, 0));
         task2 = new Task("Задача 2", "Описание 2", Duration.ofHours(1), LocalDateTime.of(2024, 1, 1, 3, 0));
         epic1 = new Epic("Эпик 1", "Описание эпика 1");
@@ -37,5 +44,20 @@ class InMemoryTaskManagerTest extends AbstractTaskManagerTest<InMemoryTaskManage
         updatedEpic = new Epic(epic1Id, "Обновленный эпик 1", "Обновленное писание эпика 1");
         updatedSubTask = new SubTask(5, "Подзадача 4", "Описание подзадачи 4", TaskStatus.IN_PROGRESS, Duration.ofHours(1), LocalDateTime.of(2024, 1, 5, 1, 0), epic1.getId());
     }
-}
 
+    @Test
+    void loadFormFileTest() {
+        FileBackedTaskManager newManager = FileBackedTaskManager.loadFromFile(file);
+
+        assertEquals(manager.getTaskById(task1Id), newManager.getTaskById(task1Id));
+        assertEquals(manager.getEpicById(epic1Id), newManager.getEpicById(epic1Id));
+        assertEquals(manager.getSubTaskById(subtask1Id), newManager.getSubTaskById(subtask1Id));
+    }
+
+    @Test
+    void loadNoFileTest() {
+        assertThrows(ManagerLoadExceptions.class,
+                () -> FileBackedTaskManager.loadFromFile(noFile), "Данные не могли быть загружен.");
+    }
+
+}
