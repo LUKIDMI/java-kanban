@@ -47,6 +47,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 if (path.equals("/tasks")) {
                     Task task = gson.fromJson(new InputStreamReader(httpExchange.getRequestBody()), Task.class);
                     if (manager.getTaskById(task.getId()) != null) {
+                        manager.updateTask(task);
                         sendHasInteractions(httpExchange); // если задача с таким id уже существует
                     } else {
                         manager.addTask(task);

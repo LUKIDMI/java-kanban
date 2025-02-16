@@ -43,6 +43,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                 if (path.equals("/epics")) {
                     Epic epic = gson.fromJson(new InputStreamReader(h.getRequestBody()), Epic.class);
                     if (manager.getEpicById(epic.getId()) != null) {
+                        manager.updateEpic(epic);
                         sendHasInteractions(h); // Если эпик с таким id уже существует
                     } else {
                         manager.addTask(epic);

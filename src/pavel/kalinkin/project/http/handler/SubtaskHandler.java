@@ -44,6 +44,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                 if (path.equals("/subtasks")) {
                     SubTask subTask = gson.fromJson(new InputStreamReader(h.getRequestBody()), SubTask.class);
                     if (manager.getSubTaskById(subTask.getId()) != null) {
+                        manager.updateTask(subTask);
                         sendHasInteractions(h); // Если подзадача с таким id уже существует
                     } else {
                         manager.addTask(subTask);
